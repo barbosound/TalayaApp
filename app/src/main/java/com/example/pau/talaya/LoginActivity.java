@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void consultaApiLogin(final View view, String correu, String contrasenya){
 
-        final String url = " http://talaiaapi.azurewebsites.net/api/usuari/actions?correu="+correu+"&pass="+contrasenya;
+        final String url = " http://talaiaapi.azurewebsites.net/api/usuari/?correu="+correu+"&pass="+contrasenya;
 
         clientUsuari = new AsyncHttpClient();
         clientUsuari.setMaxRetriesAndTimeout(0,10000);
@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
 
-                    if (str.isEmpty()){
+                    if (str.equals("null")){
 
                         txtUsr.setError("Usuari o contrasenya incorrectes");
                         txtUsr.requestFocus();

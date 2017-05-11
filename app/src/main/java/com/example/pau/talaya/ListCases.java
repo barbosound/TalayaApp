@@ -1,9 +1,11 @@
 package com.example.pau.talaya;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 
 /**
@@ -46,6 +57,10 @@ public class ListCases extends Fragment {
     private String Lrating="";
 
     private OnFragmentInteractionListener mListener;
+    private ProgressDialog progress;
+    private AsyncHttpClient clientUsuari;
+
+    private View view;
 
     public ListCases() {
         // Required empty public constructor
@@ -88,7 +103,7 @@ public class ListCases extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_list_cases, container, false);
+        view = inflater.inflate(R.layout.fragment_list_cases, container, false);
 
         ListView llista = (ListView)view.findViewById(R.id.listCases);
 
@@ -114,6 +129,8 @@ public class ListCases extends Fragment {
                 b.putString("capacitat",Lcapaitat);
                 b.putString("comarca",Lcomarca);
                 b.putString("rating",Lrating);
+
+
 
                 Intent intencio = new Intent(getActivity(),DescCasa.class);
 
@@ -164,5 +181,45 @@ public class ListCases extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void consultaApiLogin(int id){
+
+        final View view2 = view;
+        final String url = " http://talaiaapi.azurewebsites.net/api/usuari/"+id;
+
+        clientUsuari = new AsyncHttpClient();
+        clientUsuari.setMaxRetriesAndTimeout(0,10000);
+
+        clientUsuari.get(getContext(), url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+
+                progress = ProgressDialog.show(view.getContext(),"",
+                        "", true);
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                JSONArray jsonArray = null;
+                JSONObject usuari = null;
+                String str = new String(responseBody);
+
+
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                Snackbar.make(view2.findViewById(android.R.id.content), "Error de conexió", Snackbar.LENGTH_LONG)
+                        .show();
+
+                progress.dismiss();
+
+            }
+        });
+
     }
 }

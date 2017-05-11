@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -41,6 +42,16 @@ public class DescCasa extends AppCompatActivity {
         TextView txtCapacitat = (TextView)findViewById(R.id.textCapacitat);
         TextView txtRating = (TextView)findViewById(R.id.textPuntuacio);
 
+        ImageView billar = (ImageView)findViewById(R.id.image1);
+        ImageView campFut = (ImageView)findViewById(R.id.image2);
+        ImageView campTen = (ImageView)findViewById(R.id.image3);
+        ImageView internet = (ImageView)findViewById(R.id.image4);
+        ImageView piscina = (ImageView)findViewById(R.id.image5);
+        ImageView projector = (ImageView)findViewById(R.id.image6);
+        ImageView sala = (ImageView)findViewById(R.id.image7);
+        ImageView pingpong = (ImageView)findViewById(R.id.image8);
+
+
         nom = b.getString("nom") + ",";
         txtNom.setText(nom);
         txtComarca.setText(b.getString("comarca"));
@@ -59,7 +70,7 @@ public class DescCasa extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(nom);
+        getSupportActionBar().setTitle(b.getString("nom"));
 
 
         RatingBar avg =(RatingBar)findViewById(R.id.avgRating);
@@ -91,6 +102,10 @@ public class DescCasa extends AppCompatActivity {
                 }
             }
         });
+
+
+
+
 
     }
 

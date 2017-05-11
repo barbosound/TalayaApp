@@ -82,11 +82,11 @@ public class FiltreCerca extends AppCompatActivity implements MultiSpinner.OnIte
         window.setStatusBarColor(Color.parseColor("#4C9141"));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_flecha_back));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Filtre de cerca");
-
-        Toast.makeText(this,String.valueOf(usuariActiu.getIdUsuari()),Toast.LENGTH_LONG).show();
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 

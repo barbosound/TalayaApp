@@ -24,6 +24,9 @@
 
         </activity>
         <activity android:name=".FiltreCerca">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".home" />
 
         </activity>
         <activity android:name=".form_login">
@@ -33,9 +36,7 @@
                 android:value=".LoginActivity" />
         </activity>
         <activity android:name=".home" android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".FiltreCerca" />
+
         </activity>
         <activity android:name=".DescCasa">
             <meta-data

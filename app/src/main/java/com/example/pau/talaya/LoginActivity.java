@@ -150,9 +150,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
 
-                    usuari = new JSONObject(str);
-
-                    if (usuari == null){
+                    if (str.isEmpty()){
 
                         txtUsr.setError("Usuari o contrasenya incorrectes");
                         txtUsr.requestFocus();
@@ -161,11 +159,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     }else{
 
+                        usuari = new JSONObject(str);
+
                         usuariActiu = new UsuariActiu(usuari.getInt("IdUsuari"),usuari.getString("Nom"),usuari.getString("Cognom"));
 
                         progress.dismiss();
 
-                        Intent intencio = new Intent(view.getContext(),FiltreCerca.class);
+                        Intent intencio = new Intent(view.getContext(),home.class);
 
                         startActivity(intencio);
 

@@ -84,9 +84,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
         window.setStatusBarColor(Color.parseColor("#4C9141"));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_flecha_back));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Resultats");
 
@@ -223,6 +221,14 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 {fM.beginTransaction().replace(R.id.frame, avis).commit();}
                 else
                 {fM.beginTransaction().show(avis).commit();}
+
+                break;
+
+            case R.id.advanced:
+
+                Intent intencio = new Intent(view.getContext(),FiltreCerca.class);
+
+                startActivity(intencio);
 
                 break;
         }

@@ -6,11 +6,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+
 
 /**
  * Created by Pau on 28/4/17.
@@ -30,17 +34,6 @@ public class DescCasa extends AppCompatActivity {
         Window window = getWindow();
         window.setStatusBarColor(Color.parseColor("#4C9141"));
 
-        RelativeLayout layoutDesc = (RelativeLayout)findViewById(R.id.descripcio);
-
-        layoutDesc.bringToFront();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_flecha_back));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Resultats");
-
         Bundle b = getIntent().getExtras();
 
         TextView txtNom = (TextView)findViewById(R.id.textNom);
@@ -56,6 +49,18 @@ public class DescCasa extends AppCompatActivity {
         txtCapacitat.setText(capacitat);
 
         txtRating.setText(b.getString("rating"));
+
+        RelativeLayout layoutDesc = (RelativeLayout)findViewById(R.id.descripcio);
+
+        layoutDesc.bringToFront();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_flecha_back));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(nom);
+
 
         RatingBar avg =(RatingBar)findViewById(R.id.avgRating);
 

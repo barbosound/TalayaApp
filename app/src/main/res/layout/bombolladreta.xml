@@ -56,14 +56,15 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:id="@+id/msg_bubble_background_text"
         style="@style/BubbleTextFrame.Right"
         android:baselineAligned="false"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:id="@+id/msg_linear_list_item_right"

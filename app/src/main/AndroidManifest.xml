@@ -47,7 +47,9 @@
         <activity
             android:name=".DinsConversa"
             android:label="@string/title_activity_dins_conversa"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home" />

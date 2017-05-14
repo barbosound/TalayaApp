@@ -68,7 +68,7 @@ public class DataBaseManager {
 
         return usuari;
     }
-    public void insertarmissatge ( String data, String missatge, int idenvia, int idrep){
+    public void insertarmissatge (String data, String missatge, int idenvia, int idrep){
 
         ContentValues vciutat = new ContentValues();
 
@@ -76,7 +76,6 @@ public class DataBaseManager {
         vciutat.put(database.M_Perfil2, idrep);
         vciutat.put(database.M_Missatge, missatge);
         vciutat.put(database.M_Data, data);
-
 
 
         dbW.insert(database.TABLE_Missatges, null, vciutat);

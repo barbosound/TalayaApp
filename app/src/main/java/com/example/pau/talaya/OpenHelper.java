@@ -13,7 +13,6 @@ public class OpenHelper extends SQLiteOpenHelper {
     public static final int DB_SHEME_VERSION = 1;
 
     //Definim constants
-
     public static final String TABLE_Conversa = "Conversa";
     public static final String C_ID = "_id";
     public static final String C_Perfil = "NomPerfil";

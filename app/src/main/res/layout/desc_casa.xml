@@ -37,12 +37,30 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/layer_card_background"
             >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/noData"
+                android:visibility="invisible"
+                android:layout_marginTop="75dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textNoData"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="No disposa d'instalacions"
+                    android:gravity="center"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -78,21 +96,21 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/billar"
+                    app:srcCompat="@drawable/futbol"
                     android:contentDescription="instal"/>
                 <ImageView
                     android:id="@+id/image3"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/billar"
+                    app:srcCompat="@drawable/tennis"
                     android:contentDescription="instal"/>
                 <ImageView
                     android:id="@+id/image4"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/billar"
+                    app:srcCompat="@drawable/wifi"
                     android:contentDescription="instal" />
             </LinearLayout>
 
@@ -108,28 +126,28 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/billar"
+                    app:srcCompat="@drawable/piscina"
                     android:contentDescription="instal"/>
                 <ImageView
                     android:id="@+id/image6"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/billar"
+                    app:srcCompat="@drawable/projector"
                     android:contentDescription="instal"/>
                 <ImageView
                     android:id="@+id/image7"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/billar"
+                    app:srcCompat="@drawable/comuna"
                     android:contentDescription="instal"/>
                 <ImageView
                     android:id="@+id/image8"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/billar"
+                    app:srcCompat="@drawable/pingpong"
                     android:contentDescription="instal" />
             </LinearLayout>
 

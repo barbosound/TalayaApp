@@ -1,8 +1,11 @@
 package com.example.pau.talaya;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,11 +13,32 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.security.AccessController;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+
+import static com.example.pau.talaya.LoginActivity.usuariActiu;
+import static java.security.AccessController.getContext;
 
 
 /**
@@ -25,6 +49,21 @@ public class DescCasa extends AppCompatActivity {
 
     private boolean fav = false;
 
+    private int billar = 0;
+    private int campFut = 0;
+    private int campTen = 0;
+    private int internet = 0;
+    private int piscina = 0;
+    private int projector = 0;
+    private int sala = 0;
+    private int pingpong = 0;
+    private AsyncHttpClient clientUsuari;
+    private ProgressDialog progress;
+
+    private boolean noInstalacions = false;
+
+    private View view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,25 +71,28 @@ public class DescCasa extends AppCompatActivity {
 
         String capacitat, preu, nom;
 
+        view = getWindow().getDecorView().getRootView();
+
         Window window = getWindow();
         window.setStatusBarColor(Color.parseColor("#4C9141"));
 
-        Bundle b = getIntent().getExtras();
+        final Bundle b = getIntent().getExtras();
 
         TextView txtNom = (TextView)findViewById(R.id.textNom);
         TextView txtComarca = (TextView)findViewById(R.id.textComarca);
         TextView txtCapacitat = (TextView)findViewById(R.id.textCapacitat);
         TextView txtRating = (TextView)findViewById(R.id.textPuntuacio);
 
-        ImageView billar = (ImageView)findViewById(R.id.image1);
-        ImageView campFut = (ImageView)findViewById(R.id.image2);
-        ImageView campTen = (ImageView)findViewById(R.id.image3);
-        ImageView internet = (ImageView)findViewById(R.id.image4);
-        ImageView piscina = (ImageView)findViewById(R.id.image5);
-        ImageView projector = (ImageView)findViewById(R.id.image6);
-        ImageView sala = (ImageView)findViewById(R.id.image7);
-        ImageView pingpong = (ImageView)findViewById(R.id.image8);
+        ImageView billarImg = (ImageView)findViewById(R.id.image1);
+        ImageView campFutImg = (ImageView)findViewById(R.id.image2);
+        ImageView campTenImg = (ImageView)findViewById(R.id.image3);
+        ImageView internetImg = (ImageView)findViewById(R.id.image4);
+        ImageView piscinaImg = (ImageView)findViewById(R.id.image5);
+        ImageView projectorImg = (ImageView)findViewById(R.id.image6);
+        ImageView salaImg = (ImageView)findViewById(R.id.image7);
+        ImageView pingpongImg = (ImageView)findViewById(R.id.image8);
 
+        consultaApiCasa(view,b.getString("id"));
 
         nom = b.getString("nom") + ",";
         txtNom.setText(nom);
@@ -62,6 +104,7 @@ public class DescCasa extends AppCompatActivity {
         txtRating.setText(b.getString("rating"));
 
         RelativeLayout layoutDesc = (RelativeLayout)findViewById(R.id.descripcio);
+        LinearLayout noData = (LinearLayout)findViewById(R.id.noData);
 
         layoutDesc.bringToFront();
 
@@ -71,7 +114,6 @@ public class DescCasa extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(b.getString("nom"));
-
 
         RatingBar avg =(RatingBar)findViewById(R.id.avgRating);
 
@@ -99,13 +141,222 @@ public class DescCasa extends AppCompatActivity {
                 }else {
                     favorits.setImageResource(R.drawable.star_selected);
                     fav = true;
+                    posaMarcador(b.getString("id"));
                 }
             }
         });
 
+        campFut = 1;
+        internet = 1;
+
+        piscina = 1;
 
 
+        if (billar == 0){
+            billarImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
+        if (campFut == 0){
+            campFutImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
+        if (campTen == 0){
+            campTenImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
+        if (internet == 0){
+            internetImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
+        if (piscina == 0){
+            piscinaImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
+        if (projector == 0){
+            projectorImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
+        if (sala == 0){
+            salaImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
+        if (pingpong == 0){
+            pingpongImg.setVisibility(View.GONE);
+            noInstalacions = true;
+        }else{
+            noInstalacions = false;
+        }
 
+        if (noInstalacions){
+
+            noData.setVisibility(View.VISIBLE);
+        }
+
+    }
+    public void consultaApiCasa(final View view, String id){
+
+        final String url = " http://talaiaapi.azurewebsites.net/api/casa/"+id;
+
+        final View view2 = view;
+
+        clientUsuari = new AsyncHttpClient();
+        clientUsuari.setMaxRetriesAndTimeout(0,10000);
+
+        clientUsuari.get(DescCasa.this, url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+
+                progress = ProgressDialog.show(view2.getContext(),"",
+                        "Carregant dades", true);
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                JSONObject casa = null;
+                String str = new String(responseBody);
+
+                try {
+
+                    casa = new JSONObject(str);
+
+                    billar = casa.getInt("Billar");
+                    campFut = casa.getInt("CampFutbol");
+                    campTen = casa.getInt("CampTenis");
+                    internet = casa.getInt("Internet");
+                    piscina = casa.getInt("Piscina");
+                    projector = casa.getInt("Projector");
+                    sala = casa.getInt("SalaComuna");
+                    pingpong = casa.getInt("TenisTaula");
+
+                }catch (JSONException e) {
+
+                    e.printStackTrace();
+
+                }
+                progress.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                Snackbar.make(view, "Error de conexió", Snackbar.LENGTH_LONG)
+                        .show();
+
+                progress.dismiss();
+
+            }
+        });
+
+    }
+    private void posaMarcador(String idCasa) {
+
+        HttpResponse response;
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://talaiaapi.azurewebsites.net/api/marcador/"+usuariActiu.getIdUsuari();
+        HttpPost post = new HttpPost(url);
+
+        JSONObject favorit = new JSONObject();
+
+
+        try {
+            favorit.put("FKUsuari",usuariActiu.getIdUsuari());
+            favorit.put("FKCasa",idCasa);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String strUser = favorit.toString();
+
+        post.setEntity(new StringEntity(strUser, "UTF-8"));
+        post.setHeader("Content-Type", "application/json");
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
+
+        try {
+            response = client.execute(post);
+            String sresponse = response.getEntity().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    public void treuMarcador(final View view){
+
+        final String url = " http://talaiaapi.azurewebsites.net/api/marcador/"+usuariActiu.getIdUsuari();
+
+        final View view2 = view;
+
+        clientUsuari = new AsyncHttpClient();
+        clientUsuari.setMaxRetriesAndTimeout(0,10000);
+
+        clientUsuari.get(DescCasa.this, url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                JSONObject casa = null;
+                String str = new String(responseBody);
+
+                try {
+
+                    casa = new JSONObject(str);
+
+                    billar = casa.getInt("Billar");
+                    campFut = casa.getInt("CampFutbol");
+                    campTen = casa.getInt("CampTenis");
+                    internet = casa.getInt("Internet");
+                    piscina = casa.getInt("Piscina");
+                    projector = casa.getInt("Projector");
+                    sala = casa.getInt("SalaComuna");
+                    pingpong = casa.getInt("TenisTaula");
+
+                }catch (JSONException e) {
+
+                    e.printStackTrace();
+
+                }
+                progress.dismiss();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                Snackbar.make(view, "Error de conexió", Snackbar.LENGTH_LONG)
+                        .show();
+
+                progress.dismiss();
+
+            }
+        });
 
     }
 

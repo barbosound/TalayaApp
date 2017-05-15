@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -21,6 +22,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -51,6 +53,7 @@ public class ListCases extends Fragment {
     private ArrayList<String> comarca = new ArrayList<>();
     private ArrayList<String> rating = new ArrayList<>();
 
+    private String Lid ="";
     private String Lnom ="";
     private String Lcapaitat="";
     private String Lcomarca="";
@@ -114,23 +117,35 @@ public class ListCases extends Fragment {
         llista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                Lnom = nom.get(i);
-
-                Lcapaitat = capacitat.get(i);
-
-                Lcomarca = comarca.get(i);
-
-                Lrating = rating.get(i);
-
                 Bundle b = new Bundle();
 
+                TextView txtNom = (TextView)view.findViewById(R.id.textNom);
+
+                Lnom = txtNom.getText().toString();
+
+                for (int x = 0; x < nom.size();x++){
+
+                    if (nom.get(x).equals(Lnom)){
+
+                        Lid = id.get(x);
+
+                        Lnom = nom.get(x);
+
+                        Lcapaitat = capacitat.get(x);
+
+                        Lcomarca = comarca.get(x);
+
+                        Lrating = rating.get(x);
+
+                    }
+
+                }
+
+                b.putString("id",Lid);
                 b.putString("nom",Lnom);
                 b.putString("capacitat",Lcapaitat);
                 b.putString("comarca",Lcomarca);
                 b.putString("rating",Lrating);
-
-
 
                 Intent intencio = new Intent(getActivity(),DescCasa.class);
 
@@ -183,43 +198,4 @@ public class ListCases extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void consultaApiLogin(int id){
-
-        final View view2 = view;
-        final String url = " http://talaiaapi.azurewebsites.net/api/usuari/"+id;
-
-        clientUsuari = new AsyncHttpClient();
-        clientUsuari.setMaxRetriesAndTimeout(0,10000);
-
-        clientUsuari.get(getContext(), url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-
-                progress = ProgressDialog.show(view.getContext(),"",
-                        "", true);
-
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                JSONArray jsonArray = null;
-                JSONObject usuari = null;
-                String str = new String(responseBody);
-
-
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                Snackbar.make(view2.findViewById(android.R.id.content), "Error de conexió", Snackbar.LENGTH_LONG)
-                        .show();
-
-                progress.dismiss();
-
-            }
-        });
-
-    }
 }

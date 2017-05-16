@@ -26,10 +26,6 @@ import static com.example.pau.talaya.home.CasaList;
 
 public class AdapterCasa extends ArrayAdapter<Casa> {
 
-    private ArrayList<String> nom = new ArrayList<>();
-    private ArrayList<String> capacitat = new ArrayList<>();
-    private ArrayList<String> comarca = new ArrayList<>();
-    private ArrayList<String> rating = new ArrayList<>();
     private ArrayList<Casa> CasaList = new ArrayList<>();
 
     public AdapterCasa(Context context, int layoutResourceId, ArrayList<Casa> CasaList) {
@@ -55,10 +51,12 @@ public class AdapterCasa extends ArrayAdapter<Casa> {
         stars.getDrawable(2).setColorFilter(Color.parseColor("#57a639" +
                 ""), PorterDuff.Mode.SRC_ATOP);
 
+        TextView txtid = (TextView)view.findViewById(R.id.textID);
         TextView txtnom = (TextView)view.findViewById(R.id.textNom);
         TextView txtdesc = (TextView)view.findViewById(R.id.textCap);
         TextView txtcom = (TextView)view.findViewById(R.id.textComarca);
 
+        txtid.setText(String.valueOf(CasaList.get(position).getIdCasa()));
         txtnom.setText(CasaList.get(position).getNom());
         txtdesc.setText(String.valueOf(CasaList.get(position).getCapacitat()));
         txtcom.setText("("+CasaList.get(position).getComarca()+")");

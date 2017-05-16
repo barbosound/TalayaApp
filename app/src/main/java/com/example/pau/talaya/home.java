@@ -79,8 +79,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
     private Casa ObjCasa;
 
-    private boolean done = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +99,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
         consultaFavorits(view);
 
-
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -112,7 +109,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                                 getSupportActionBar().setTitle("Resultats");
 
                                 if(!listCases.isAdded()){
-                                    listCases.setArguments(bCasa);
                                     fM.beginTransaction().replace(R.id.frame,listCases).commit();
                                 }else{
                                     fM.beginTransaction().show(listCases).commit();
@@ -135,7 +131,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                                 getSupportActionBar().setTitle("Perfil");
 
                                 if(!perfil.isAdded()){
-                                    perfil.setArguments(bReserva);
                                     fM.beginTransaction().replace(R.id.frame,perfil).commit();
                                 }else{
                                     fM.beginTransaction().show(perfil).commit();
@@ -240,15 +235,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
             case R.id.refresh:
 
                 consultaFavorits(view);
-
-                if (done){
-
-                    consultaApiCasa(view);
-
-                    consultaApiReserves(view);
-
-                }
-
                 break;
         }
 
@@ -266,7 +252,9 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
         String url = "http://talaiaapi.azurewebsites.net/api/casa";
 
+
         CasaList.clear();
+        FavoritsList.clear();
 
         id.clear();
         nom.clear();
@@ -285,6 +273,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 JSONArray jsonArray = null;
                 JSONObject casa = null;
                 String str = new String(responseBody);
+
+                String idFav = "";
 
                 int IdCasa;
                 String Nom;
@@ -348,9 +338,12 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
                         for (int x = 0; x < idFavorits.size();x++){
 
-                            if (idFavorits.get(x).equals(String.valueOf(IdCasa))){
+                            idFav = idFavorits.get(x);
+
+                            if (idFav.equals(String.valueOf(IdCasa))){
 
                                 favorits = true;
+                                break;
 
                             }else{
 
@@ -378,13 +371,13 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 }
 
 
-//                if(!listCases.isAdded()){
-//                    fM.beginTransaction().replace(R.id.frame,listCases).commit();
-//                }else{
-//                    fM.beginTransaction().show(listCases).commit();
-//                }
+                if(!listCases.isAdded()){
+                    fM.beginTransaction().replace(R.id.frame,listCases).commit();
+                }else{
+                    fM.beginTransaction().show(listCases).commit();
+                }
 
-                fM.beginTransaction().add(R.id.frame,listCases).commit();
+//                fM.beginTransaction().add(R.id.frame,listCases).commit();
 
                 consultaApiReserves(view);
 
@@ -487,6 +480,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
     }
 
     private void consultaFavorits(final View view){
+
+        idFavorits.clear();
 
         AsyncHttpClient clientFavorits;
 

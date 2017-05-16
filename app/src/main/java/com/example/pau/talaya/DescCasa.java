@@ -71,7 +71,7 @@ public class DescCasa extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.desc_casa);
 
-        String capacitat, preu, nom;
+        String capacitat, preu, nom, id;
 
         view = getWindow().getDecorView().getRootView();
 
@@ -94,9 +94,12 @@ public class DescCasa extends AppCompatActivity {
         ImageView salaImg = (ImageView)findViewById(R.id.image7);
         ImageView pingpongImg = (ImageView)findViewById(R.id.image8);
 
+        id = b.getString("id");
+
         for (int i = 0; i < CasaList.size();i++){
 
-            if (b.getString("nom").equals(CasaList.get(i).getNom())){
+            assert id != null;
+            if (id.equals(String.valueOf(CasaList.get(i).getIdCasa()))){
 
                 indexCasa = i;
 
@@ -122,7 +125,7 @@ public class DescCasa extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(b.getString("nom"));
+        getSupportActionBar().setTitle(CasaList.get(indexCasa).getNom());
 
         RatingBar avg =(RatingBar)findViewById(R.id.avgRating);
 
@@ -145,52 +148,44 @@ public class DescCasa extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (CasaList.get(indexCasa).isFavorits()){
+
                     favorits.setImageResource(R.drawable.star_unselected);
                     CasaList.get(indexCasa).setFavorits(false);
+
                 }else {
+
                     favorits.setImageResource(R.drawable.star_selected);
                     CasaList.get(indexCasa).setFavorits(true);
+
                     posaMarcador(String.valueOf(CasaList.get(indexCasa).getIdCasa()));
+
                 }
             }
         });
 
-        campFut = 1;
-        internet = 1;
-        piscina = 1;
-
-
         if (CasaList.get(indexCasa).getBillar() == 0){
             billarImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
         if (CasaList.get(indexCasa).getCampFutbol() == 0){
             campFutImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
         if (CasaList.get(indexCasa).getCampTenis() == 0){
             campTenImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
         if (CasaList.get(indexCasa).getInternet() == 0){
             internetImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
         if (CasaList.get(indexCasa).getPiscina() == 0){
             piscinaImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
         if (CasaList.get(indexCasa).getProjector() == 0){
             projectorImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
         if (CasaList.get(indexCasa).getSalaComuna() == 0){
             salaImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
         if (CasaList.get(indexCasa).getTenisTaula() == 0) {
             pingpongImg.setVisibility(View.GONE);
-            noInstalacions = true;
         }
 
         if (CasaList.get(indexCasa).getBillar() == 0 && CasaList.get(indexCasa).getCampFutbol() == 0 && CasaList.get(indexCasa).getCampTenis() == 0 && CasaList.get(indexCasa).getInternet() == 0 && CasaList.get(indexCasa).getPiscina() == 0 && CasaList.get(indexCasa).getProjector() == 0 && CasaList.get(indexCasa).getSalaComuna() == 0 && CasaList.get(indexCasa).getTenisTaula() == 0){
@@ -242,7 +237,7 @@ public class DescCasa extends AppCompatActivity {
     }
     public void treuMarcador(final View view){
 
-        final String url = " http://talaiaapi.azurewebsites.net/api/marcador/"+usuariActiu.getIdUsuari();
+        final String url = "http://talaiaapi.azurewebsites.net/api/marcador/"+usuariActiu.getIdUsuari();
 
         final View view2 = view;
 

@@ -35,6 +35,16 @@
                 android:layout_gravity="center">
 
                 <TextView
+                    android:id="@+id/textID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:visibility="gone"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="20sp" />
+
+                <TextView
                     android:id="@+id/textNom"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

@@ -5,6 +5,7 @@ package com.example.pau.talaya;
  */
 
 public class Casa {
+
     public int getIdCasa() {
         return IdCasa;
     }
@@ -129,12 +130,13 @@ public class Casa {
     private int CodiPostal;
     private int FK_Propietari;
     private double Mitjana;
+    private boolean favorits;
 
     public void setFavorits(boolean favorits) {
         this.favorits = favorits;
     }
 
-    private boolean favorits;
+
 
     public Casa (int IdCasa,String Nom,int PreuBasic,int PreuMitja,int PreuCompleta,String Descripcio,int Capacitat,int Habitacions,int Banys,int Piscina,int CampFutbol,int CampTenis,int TenisTaula,int Billar,int SalaComuna,int Projector,int Internet,String Comarca,String Poblacio,int CarrerNum,String Provincia,int CodiPostal,int FK_Propietari,double Mitjana,boolean favorits){
 

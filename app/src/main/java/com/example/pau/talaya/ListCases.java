@@ -49,17 +49,7 @@ public class ListCases extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private ArrayList<String> id = new ArrayList<>();
-    private ArrayList<String> nom = new ArrayList<>();
-    private ArrayList<String> capacitat = new ArrayList<>();
-    private ArrayList<String> comarca = new ArrayList<>();
-    private ArrayList<String> rating = new ArrayList<>();
-
     private String Lid ="";
-    private String Lnom ="";
-    private String Lcapaitat="";
-    private String Lcomarca="";
-    private String Lrating="";
 
     private OnFragmentInteractionListener mListener;
     private ProgressDialog progress;
@@ -95,12 +85,6 @@ public class ListCases extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
-            id = getArguments().getStringArrayList("id");
-            nom = getArguments().getStringArrayList("nom");
-            capacitat = getArguments().getStringArrayList("capacitat");
-            comarca = getArguments().getStringArrayList("comarca");
-            rating = getArguments().getStringArrayList("rating");
         }
     }
 
@@ -121,11 +105,11 @@ public class ListCases extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Bundle b = new Bundle();
 
-                TextView txtNom = (TextView)view.findViewById(R.id.textNom);
+                TextView txtId = (TextView)view.findViewById(R.id.textID);
 
-                Lnom = txtNom.getText().toString();
+                Lid = txtId.getText().toString();
 
-                b.putString("nom",Lnom);
+                b.putString("id",Lid);
 
                 Intent intencio = new Intent(getActivity(),DescCasa.class);
 

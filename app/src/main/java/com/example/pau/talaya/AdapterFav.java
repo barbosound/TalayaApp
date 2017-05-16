@@ -26,12 +26,12 @@ import static com.example.pau.talaya.home.CasaList;
 
 public class AdapterFav extends ArrayAdapter<Casa> {
 
-    private ArrayList<Casa> FavortisList = new ArrayList<>();
+    private ArrayList<Casa> FavoritsList = new ArrayList<>();
 
-    public AdapterFav(Context context, int layoutResourceId, ArrayList<Casa> FavortisList) {
-        super(context, layoutResourceId, FavortisList);
+    public AdapterFav(Context context, int layoutResourceId, ArrayList<Casa> FavoritsList) {
+        super(context, layoutResourceId, FavoritsList);
 
-        this.FavortisList = FavortisList;
+        this.FavoritsList = FavoritsList;
 
     }
 
@@ -55,10 +55,10 @@ public class AdapterFav extends ArrayAdapter<Casa> {
         TextView txtdesc = (TextView)view.findViewById(R.id.textCap);
         TextView txtcom = (TextView)view.findViewById(R.id.textComarca);
 
-        txtnom.setText(FavortisList.get(position).getNom());
-        txtdesc.setText(String.valueOf(FavortisList.get(position).getCapacitat()));
-        txtcom.setText("("+FavortisList.get(position).getComarca()+")");
-        avg = Float.parseFloat(String.valueOf(FavortisList.get(position).getMitjana()));
+        txtnom.setText(FavoritsList.get(position).getNom());
+        txtdesc.setText(String.valueOf(FavoritsList.get(position).getCapacitat()));
+        txtcom.setText("("+FavoritsList.get(position).getComarca()+")");
+        avg = Float.parseFloat(String.valueOf(FavoritsList.get(position).getMitjana()));
 
         avgRating.setEnabled(false);
 

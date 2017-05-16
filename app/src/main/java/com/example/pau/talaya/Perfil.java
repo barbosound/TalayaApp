@@ -142,12 +142,13 @@ public class Perfil extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         MIFragmentPageManager adapter = new MIFragmentPageManager(getChildFragmentManager());
-        Fpendents.setArguments(b);
+
         adapter.addFragment(Fpendents, "Pendents");
-        Ffinalitzades.setArguments(b);
+
         adapter.addFragment(Ffinalitzades, "Finalitzades");
-        Ffavorits.setArguments(b);
+
         adapter.addFragment(Ffavorits, "Favorits");
+
         viewPager.setAdapter(adapter);
     }
 

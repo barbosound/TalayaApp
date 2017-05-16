@@ -44,6 +44,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
         AvisLegal.OnFragmentInteractionListener{
 
     public static ArrayList<Casa> CasaList = new ArrayList<Casa>();
+    public static ArrayList<Casa> FavoritsList = new ArrayList<Casa>();
 
     ListCases listCases = new ListCases();
     missatges miss = new missatges();
@@ -68,9 +69,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
     private ArrayList<String> idFavorits = new ArrayList<>();
 
-    public static boolean teReserves = false;
-
-    private AsyncHttpClient clientCasa, clientReserva, clientFavorits;
+    public static boolean teReserves = false, teFavorits = false;
 
     public Bundle bCasa = new Bundle();
     public Bundle bReserva = new Bundle();
@@ -101,14 +100,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
         view = getWindow().getDecorView().getRootView();
 
         consultaFavorits(view);
-
-        if (done){
-
-            consultaApiCasa(view);
-
-            consultaApiReserves(view);
-
-        }
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -261,8 +252,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 break;
         }
 
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -272,6 +261,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
     }
 
     private void consultaApiCasa(final View view){
+
+        AsyncHttpClient clientCasa;
 
         String url = "http://talaiaapi.azurewebsites.net/api/casa";
 
@@ -368,16 +359,15 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                             }
                         }
 
-
                         ObjCasa = new Casa(IdCasa, Nom, PreuBasic, PreuMitja, PreuCompleta, Descripcio, Capacitat, Habitacions, Banys, Piscina, CampFutbol, CampTenis, TenisTaula, Billar, SalaComuna, Projector, Internet, Comarca, Poblacio, CarrerNum, Provincia, CodiPostal, FK_Propietari, Mitjana, favorits);
 
-                        CasaList.add(ObjCasa);
+                        if (ObjCasa.isFavorits()){
 
-//                        id.add(String.valueOf(casa.getInt("IdCasa")));
-//                        nom.add(casa.getString("Nom"));
-//                        capacitat.add(String.valueOf(casa.getInt("Capacitat")));
-//                        comarca.add(casa.getString("Comarca"));
-//                        rating.add(String.valueOf(casa.getDouble("Mitjana")));
+                            FavoritsList.add(ObjCasa);
+                            teFavorits = true;
+                        }
+
+                        CasaList.add(ObjCasa);
 
                     }
 
@@ -387,13 +377,6 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
                 }
 
-//                bCasa.putStringArrayList("id",id);
-//                bCasa.putStringArrayList("nom",nom);
-//                bCasa.putStringArrayList("capacitat",capacitat);
-//                bCasa.putStringArrayList("comarca",comarca);
-//                bCasa.putStringArrayList("rating",rating);
-//
-//                listCases.setArguments(bCasa);
 
 //                if(!listCases.isAdded()){
 //                    fM.beginTransaction().replace(R.id.frame,listCases).commit();
@@ -402,6 +385,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 //                }
 
                 fM.beginTransaction().add(R.id.frame,listCases).commit();
+
+                consultaApiReserves(view);
 
             }
 
@@ -418,6 +403,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
     }
 
     private void consultaApiReserves(final View view){
+
+        AsyncHttpClient clientReserva;
 
         String url = "http://talaiaapi.azurewebsites.net/api/reserva";
 
@@ -501,13 +488,15 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
     private void consultaFavorits(final View view){
 
+        AsyncHttpClient clientFavorits;
+
         String url = "http://talaiaapi.azurewebsites.net/api/marcador/"+usuariActiu.getIdUsuari();
 
         clientFavorits = new AsyncHttpClient();
 
         clientFavorits.setMaxRetriesAndTimeout(0,10000);
 
-        clientFavorits.get(home.this, url, new AsyncHttpResponseHandler() {
+        clientFavorits.get(this, url, new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -541,7 +530,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
                 }
 
-                done = true;
+                consultaApiCasa(view);
+
             }
 
             @Override

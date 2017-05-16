@@ -24,18 +24,14 @@ import static com.example.pau.talaya.home.CasaList;
  * Created by Pau on 26/4/17.
  */
 
-public class AdapterCasa extends ArrayAdapter<Casa> {
+public class AdapterFav extends ArrayAdapter<Casa> {
 
-    private ArrayList<String> nom = new ArrayList<>();
-    private ArrayList<String> capacitat = new ArrayList<>();
-    private ArrayList<String> comarca = new ArrayList<>();
-    private ArrayList<String> rating = new ArrayList<>();
-    private ArrayList<Casa> CasaList = new ArrayList<>();
+    private ArrayList<Casa> FavortisList = new ArrayList<>();
 
-    public AdapterCasa(Context context, int layoutResourceId, ArrayList<Casa> CasaList) {
-        super(context, layoutResourceId, CasaList);
+    public AdapterFav(Context context, int layoutResourceId, ArrayList<Casa> FavortisList) {
+        super(context, layoutResourceId, FavortisList);
 
-        this.CasaList = CasaList;
+        this.FavortisList = FavortisList;
 
     }
 
@@ -59,10 +55,10 @@ public class AdapterCasa extends ArrayAdapter<Casa> {
         TextView txtdesc = (TextView)view.findViewById(R.id.textCap);
         TextView txtcom = (TextView)view.findViewById(R.id.textComarca);
 
-        txtnom.setText(CasaList.get(position).getNom());
-        txtdesc.setText(String.valueOf(CasaList.get(position).getCapacitat()));
-        txtcom.setText("("+CasaList.get(position).getComarca()+")");
-        avg = Float.parseFloat(String.valueOf(CasaList.get(position).getMitjana()));
+        txtnom.setText(FavortisList.get(position).getNom());
+        txtdesc.setText(String.valueOf(FavortisList.get(position).getCapacitat()));
+        txtcom.setText("("+FavortisList.get(position).getComarca()+")");
+        avg = Float.parseFloat(String.valueOf(FavortisList.get(position).getMitjana()));
 
         avgRating.setEnabled(false);
 

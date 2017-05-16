@@ -1,12 +1,22 @@
 package com.example.pau.talaya;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import static com.example.pau.talaya.home.CasaList;
+import static com.example.pau.talaya.home.FavoritsList;
+import static com.example.pau.talaya.home.teFavorits;
+import static com.example.pau.talaya.home.teReserves;
 
 
 /**
@@ -28,6 +38,8 @@ public class favorits extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private View view;
+    private String Lnom;
 
     public favorits() {
         // Required empty public constructor
@@ -63,8 +75,44 @@ public class favorits extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        view = inflater.inflate(R.layout.fragment_favorits, container, false);
+
+        ListView llista = (ListView)view.findViewById(R.id.listFav);
+
+        LinearLayout noData = (LinearLayout)view.findViewById(R.id.noData);
+
+        if (teFavorits){
+
+            AdapterFav adapter = new AdapterFav(getContext(),R.layout.casa_row,FavoritsList);
+
+            llista.setAdapter(adapter);
+
+            llista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Bundle b = new Bundle();
+
+                    TextView txtNom = (TextView)view.findViewById(R.id.textNom);
+
+                    Lnom = txtNom.getText().toString();
+
+                    b.putString("nom",Lnom);
+
+                    Intent intencio = new Intent(getActivity(),DescCasa.class);
+
+                    intencio.putExtras(b);
+
+                    startActivity(intencio);
+                }
+            });
+        }else{
+            noData.setVisibility(View.VISIBLE);
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorits, container, false);
+        return view
+                ;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

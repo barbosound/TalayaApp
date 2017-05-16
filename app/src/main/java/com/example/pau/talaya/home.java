@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -42,6 +43,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
         Notificacions.OnFragmentInteractionListener, QuiSom.OnFragmentInteractionListener,
         AvisLegal.OnFragmentInteractionListener{
 
+    public static ArrayList<Casa> CasaList = new ArrayList<Casa>();
+
     ListCases listCases = new ListCases();
     missatges miss = new missatges();
     Perfil perfil = new Perfil();
@@ -63,17 +66,21 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
     private ArrayList<String> FKCasa = new ArrayList<>();
     private ArrayList<String> Estat = new ArrayList<>();
 
-    private String IdUser;
+    private ArrayList<String> idFavorits = new ArrayList<>();
 
     public static boolean teReserves = false;
 
-    private AsyncHttpClient clientCasa, clientReserva;
+    private AsyncHttpClient clientCasa, clientReserva, clientFavorits;
 
     public Bundle bCasa = new Bundle();
     public Bundle bReserva = new Bundle();
     public ProgressDialog progress;
 
     private View view;
+
+    private Casa ObjCasa;
+
+    private boolean done = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +100,16 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
         view = getWindow().getDecorView().getRootView();
 
-        consultaApiCasa(view);
+        consultaFavorits(view);
 
-        consultaApiReserves(view);
+        if (done){
+
+            consultaApiCasa(view);
+
+            consultaApiReserves(view);
+
+        }
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -231,6 +245,20 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 startActivity(intencio);
 
                 break;
+
+            case R.id.refresh:
+
+                consultaFavorits(view);
+
+                if (done){
+
+                    consultaApiCasa(view);
+
+                    consultaApiReserves(view);
+
+                }
+
+                break;
         }
 
 
@@ -245,7 +273,9 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
     private void consultaApiCasa(final View view){
 
-        String url = " http://talaiaapi.azurewebsites.net/api/casa";
+        String url = "http://talaiaapi.azurewebsites.net/api/casa";
+
+        CasaList.clear();
 
         id.clear();
         nom.clear();
@@ -253,16 +283,10 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
         comarca.clear();
 
         clientCasa = new AsyncHttpClient();
+
         clientCasa.setMaxRetriesAndTimeout(0,10000);
 
         clientCasa.get(home.this, url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-
-                progress = ProgressDialog.show(view.getContext(), "Progrés",
-                        "Obtenint dades...", true);
-            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -270,6 +294,32 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 JSONArray jsonArray = null;
                 JSONObject casa = null;
                 String str = new String(responseBody);
+
+                int IdCasa;
+                String Nom;
+                int PreuBasic;
+                int PreuMitja;
+                int PreuCompleta;
+                String Descripcio;
+                int Capacitat;
+                int Habitacions;
+                int Banys;
+                int Piscina;
+                int CampFutbol;
+                int CampTenis;
+                int TenisTaula;
+                int Billar;
+                int SalaComuna;
+                int Projector;
+                int Internet;
+                String Comarca;
+                String Poblacio;
+                int CarrerNum;
+                String Provincia;
+                int CodiPostal;
+                int FK_Propietari;
+                double Mitjana;
+                boolean favorits = false;
 
 
                 try {
@@ -280,11 +330,54 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
                         casa = jsonArray.getJSONObject(i);
 
-                        id.add(String.valueOf(casa.getInt("IdCasa")));
-                        nom.add(casa.getString("Nom"));
-                        capacitat.add(String.valueOf(casa.getInt("Capacitat")));
-                        comarca.add(casa.getString("Comarca"));
-                        rating.add(String.valueOf(casa.getDouble("Mitjana")));
+                        IdCasa = casa.getInt("IdCasa");
+                        Nom = casa.getString("Nom");
+                        PreuBasic = casa.optInt("PreuBasic");
+                        PreuMitja = casa.optInt("PreuMitja");
+                        PreuCompleta = casa.optInt("PreuCompleta");
+                        Descripcio = casa.optString("Descripcio");
+                        Capacitat = casa.optInt("Capacitat");
+                        Habitacions = casa.optInt("Habitacions");
+                        Banys = casa.optInt("Banys");
+                        Piscina = casa.optInt("Piscina");
+                        CampFutbol = casa.optInt("CampFutbol");
+                        CampTenis = casa.optInt("CampTenis");
+                        TenisTaula = casa.optInt("TenisTaula");
+                        Billar = casa.optInt("Billar");
+                        SalaComuna = casa.optInt("SalaComuna");
+                        Projector = casa.optInt("Projector");
+                        Internet = casa.optInt("Internet");
+                        Comarca = casa.optString("Comarca");
+                        Poblacio = casa.optString("Poblacio");
+                        CarrerNum = casa.optInt("CarrerNum");
+                        Provincia = casa.optString("Provincia");
+                        CodiPostal = casa.optInt("CodiPostal");
+                        FK_Propietari = casa.optInt("FKUsuari");
+                        Mitjana = casa.getDouble("Mitjana");
+
+                        for (int x = 0; x < idFavorits.size();x++){
+
+                            if (idFavorits.get(x).equals(String.valueOf(IdCasa))){
+
+                                favorits = true;
+
+                            }else{
+
+                                favorits = false;
+
+                            }
+                        }
+
+
+                        ObjCasa = new Casa(IdCasa, Nom, PreuBasic, PreuMitja, PreuCompleta, Descripcio, Capacitat, Habitacions, Banys, Piscina, CampFutbol, CampTenis, TenisTaula, Billar, SalaComuna, Projector, Internet, Comarca, Poblacio, CarrerNum, Provincia, CodiPostal, FK_Propietari, Mitjana, favorits);
+
+                        CasaList.add(ObjCasa);
+
+//                        id.add(String.valueOf(casa.getInt("IdCasa")));
+//                        nom.add(casa.getString("Nom"));
+//                        capacitat.add(String.valueOf(casa.getInt("Capacitat")));
+//                        comarca.add(casa.getString("Comarca"));
+//                        rating.add(String.valueOf(casa.getDouble("Mitjana")));
 
                     }
 
@@ -294,14 +387,19 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
                 }
 
-                bCasa.putStringArrayList("id",id);
-                bCasa.putStringArrayList("nom",nom);
-                bCasa.putStringArrayList("capacitat",capacitat);
-                bCasa.putStringArrayList("comarca",comarca);
-                bCasa.putStringArrayList("rating",rating);
+//                bCasa.putStringArrayList("id",id);
+//                bCasa.putStringArrayList("nom",nom);
+//                bCasa.putStringArrayList("capacitat",capacitat);
+//                bCasa.putStringArrayList("comarca",comarca);
+//                bCasa.putStringArrayList("rating",rating);
+//
+//                listCases.setArguments(bCasa);
 
-                listCases.setArguments(bCasa);
-
+//                if(!listCases.isAdded()){
+//                    fM.beginTransaction().replace(R.id.frame,listCases).commit();
+//                }else{
+//                    fM.beginTransaction().show(listCases).commit();
+//                }
 
                 fM.beginTransaction().add(R.id.frame,listCases).commit();
 
@@ -312,6 +410,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
                 Snackbar.make(view, "Error de conexió", Snackbar.LENGTH_LONG)
                         .show();
+                progress.dismiss();
 
             }
         });
@@ -320,7 +419,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
 
     private void consultaApiReserves(final View view){
 
-        String url = " http://talaiaapi.azurewebsites.net/api/reserva";
+        String url = "http://talaiaapi.azurewebsites.net/api/reserva";
 
         idReserva.clear();
         preuReserva.clear();
@@ -330,6 +429,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
         Estat.clear();
 
         clientReserva = new AsyncHttpClient();
+
         clientReserva.setMaxRetriesAndTimeout(0,10000);
 
         clientReserva.get(home.this, url, new AsyncHttpResponseHandler() {
@@ -373,11 +473,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 bReserva.putStringArrayList("FKCasa",FKCasa);
                 bReserva.putStringArrayList("Estat",Estat);
 
-                bReserva.putString("IdUser",IdUser);
-
                 perfil.setArguments(bReserva);
-
-                progress.dismiss();
 
                 for (int i = 0; i < FKUsuari.size();i++){
 
@@ -386,6 +482,8 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                         teReserves = true;
                     }
                 }
+
+                progress.dismiss();
 
             }
 
@@ -396,6 +494,63 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                         .show();
 
                 progress.dismiss();
+            }
+        });
+
+    }
+
+    private void consultaFavorits(final View view){
+
+        String url = "http://talaiaapi.azurewebsites.net/api/marcador/"+usuariActiu.getIdUsuari();
+
+        clientFavorits = new AsyncHttpClient();
+
+        clientFavorits.setMaxRetriesAndTimeout(0,10000);
+
+        clientFavorits.get(home.this, url, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+
+                progress = ProgressDialog.show(view.getContext(), "Progrés",
+                        "Obtenint dades...", true);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                JSONArray jsonArray = null;
+                JSONObject favorit = null;
+                String str = new String(responseBody);
+
+                try {
+
+                    jsonArray = new JSONArray(str);
+
+                    for (int i = 0; i < jsonArray.length();i++){
+
+                        favorit = jsonArray.getJSONObject(i);
+
+                        idFavorits.add(String.valueOf(favorit.getInt("FKCasa")));
+
+                    }
+
+                }catch (JSONException e) {
+
+                    e.printStackTrace();
+
+                }
+
+                done = true;
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                Snackbar.make(view, "Error de conexió", Snackbar.LENGTH_LONG)
+                        .show();
+                progress.dismiss();
+
             }
         });
 

@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void consultaApiLogin(final View view, String correu, String contrasenya){
 
-        final String url = " http://talaiaapi.azurewebsites.net/api/usuari/?correu="+correu+"&pass="+contrasenya;
+        final String url = "http://talaiaapi.azurewebsites.net/api/usuari/?correu="+correu+"&pass="+contrasenya;
 
         clientUsuari = new AsyncHttpClient();
         clientUsuari.setMaxRetriesAndTimeout(0,10000);

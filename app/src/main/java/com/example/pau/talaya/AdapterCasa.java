@@ -18,25 +18,29 @@ import com.example.pau.talaya.R;
 
 import java.util.ArrayList;
 
+import static com.example.pau.talaya.home.CasaList;
+
 /**
  * Created by Pau on 26/4/17.
  */
 
-public class AdapterCasa extends ArrayAdapter<String> {
+public class AdapterCasa extends ArrayAdapter<Casa> {
 
     private ArrayList<String> nom = new ArrayList<>();
     private ArrayList<String> capacitat = new ArrayList<>();
     private ArrayList<String> comarca = new ArrayList<>();
     private ArrayList<String> rating = new ArrayList<>();
+    private ArrayList<Casa> CasaList = new ArrayList<>();
 
-
-    public AdapterCasa(Context context, int layoutResourceId, ArrayList<String> nom, ArrayList<String> capacitat, ArrayList<String> comarca, ArrayList<String> rating) {
-        super(context, layoutResourceId, nom);
+    public AdapterCasa(Context context, int layoutResourceId, ArrayList<Casa> CasaList) {
+        super(context, layoutResourceId, CasaList);
 
         this.nom = nom;
         this.capacitat = capacitat;
         this.comarca = comarca;
         this.rating = rating;
+
+        this.CasaList = CasaList;
 
     }
 
@@ -60,11 +64,15 @@ public class AdapterCasa extends ArrayAdapter<String> {
         TextView txtdesc = (TextView)view.findViewById(R.id.textCap);
         TextView txtcom = (TextView)view.findViewById(R.id.textComarca);
 
-        txtnom.setText(nom.get(position));
-        txtdesc.setText(capacitat.get(position));
-        txtcom.setText("("+comarca.get(position)+")");
+//        txtnom.setText(nom.get(position));
+//        txtdesc.setText(capacitat.get(position));
+//        txtcom.setText("("+comarca.get(position)+")");
+//        avg = Float.parseFloat(rating.get(position));
 
-        avg = Float.parseFloat(rating.get(position));
+        txtnom.setText(CasaList.get(position).getNom());
+        txtdesc.setText(String.valueOf(CasaList.get(position).getCapacitat()));
+        txtcom.setText("("+CasaList.get(position).getComarca()+")");
+        avg = Float.parseFloat(String.valueOf(CasaList.get(position).getMitjana()));
 
         avgRating.setEnabled(false);
 

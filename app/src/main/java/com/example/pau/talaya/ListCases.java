@@ -28,6 +28,8 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.example.pau.talaya.home.CasaList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -110,7 +112,7 @@ public class ListCases extends Fragment {
 
         ListView llista = (ListView)view.findViewById(R.id.listCases);
 
-        AdapterCasa adapter = new AdapterCasa(getContext(),R.layout.casa_row,nom,capacitat,comarca,rating);
+        AdapterCasa adapter = new AdapterCasa(getContext(),R.layout.casa_row,CasaList);
 
         llista.setAdapter(adapter);
 
@@ -123,29 +125,7 @@ public class ListCases extends Fragment {
 
                 Lnom = txtNom.getText().toString();
 
-                for (int x = 0; x < nom.size();x++){
-
-                    if (nom.get(x).equals(Lnom)){
-
-                        Lid = id.get(x);
-
-                        Lnom = nom.get(x);
-
-                        Lcapaitat = capacitat.get(x);
-
-                        Lcomarca = comarca.get(x);
-
-                        Lrating = rating.get(x);
-
-                    }
-
-                }
-
-                b.putString("id",Lid);
                 b.putString("nom",Lnom);
-                b.putString("capacitat",Lcapaitat);
-                b.putString("comarca",Lcomarca);
-                b.putString("rating",Lrating);
 
                 Intent intencio = new Intent(getActivity(),DescCasa.class);
 

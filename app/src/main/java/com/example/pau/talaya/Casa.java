@@ -97,7 +97,7 @@ public class Casa {
         return FK_Propietari;
     }
 
-    public float getMitjana() {
+    public double getMitjana() {
         return Mitjana;
     }
 
@@ -128,10 +128,41 @@ public class Casa {
     private String Provincia;
     private int CodiPostal;
     private int FK_Propietari;
-    private float Mitjana;
+    private double Mitjana;
+
+    public void setFavorits(boolean favorits) {
+        this.favorits = favorits;
+    }
+
     private boolean favorits;
 
-    public Casa (int IdCasa,String Nom,int PreuBasic,int PreuMitja,int PreuCompleta,String Descripcio,int Capacitat,int Habitacions,int Banys,int Piscina,int CampFutbol,int CampTenis,int TenisTaula,int Billar,int SalaComuna,int Projector,int Internet,String Comarca,String Poblacio,int CarrerNum,String Provincia,int CodiPostal,int FK_Propietari,float Mitjana,boolean favorits){
+    public Casa (int IdCasa,String Nom,int PreuBasic,int PreuMitja,int PreuCompleta,String Descripcio,int Capacitat,int Habitacions,int Banys,int Piscina,int CampFutbol,int CampTenis,int TenisTaula,int Billar,int SalaComuna,int Projector,int Internet,String Comarca,String Poblacio,int CarrerNum,String Provincia,int CodiPostal,int FK_Propietari,double Mitjana,boolean favorits){
+
+        this.IdCasa = IdCasa;
+        this.Nom = Nom;
+        this.PreuBasic = PreuBasic;
+        this.PreuMitja = PreuMitja;
+        this.PreuCompleta = PreuCompleta;
+        this.Descripcio = Descripcio;
+        this.Capacitat = Capacitat;
+        this.Habitacions = Habitacions;
+        this.Banys = Banys;
+        this.Piscina = Piscina;
+        this.CampFutbol = CampFutbol;
+        this.CampTenis = CampTenis;
+        this.TenisTaula = TenisTaula;
+        this.Billar = Billar;
+        this.SalaComuna = SalaComuna;
+        this.Projector = Projector;
+        this.Internet = Internet;
+        this.Comarca = Comarca;
+        this.Poblacio = Poblacio;
+        this.CarrerNum = CarrerNum;
+        this.Provincia = Provincia;
+        this.CodiPostal = CodiPostal;
+        this.FK_Propietari = FK_Propietari;
+        this.Mitjana = Mitjana;
+        this.favorits = favorits;
 
 
     }

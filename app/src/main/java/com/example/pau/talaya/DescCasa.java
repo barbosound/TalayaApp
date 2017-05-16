@@ -38,6 +38,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 
 import static com.example.pau.talaya.LoginActivity.usuariActiu;
+import static com.example.pau.talaya.home.CasaList;
 import static java.security.AccessController.getContext;
 
 
@@ -59,6 +60,7 @@ public class DescCasa extends AppCompatActivity {
     private int pingpong = 0;
     private AsyncHttpClient clientUsuari;
     private ProgressDialog progress;
+    private int indexCasa;
 
     private boolean noInstalacions = false;
 
@@ -92,16 +94,23 @@ public class DescCasa extends AppCompatActivity {
         ImageView salaImg = (ImageView)findViewById(R.id.image7);
         ImageView pingpongImg = (ImageView)findViewById(R.id.image8);
 
-        consultaApiCasa(view,b.getString("id"));
+        for (int i = 0; i < CasaList.size();i++){
 
-        nom = b.getString("nom") + ",";
+            if (b.getString("nom").equals(CasaList.get(i).getNom())){
+
+                indexCasa = i;
+
+            }
+        }
+
+        nom = CasaList.get(indexCasa).getNom() + ",";
         txtNom.setText(nom);
-        txtComarca.setText(b.getString("comarca"));
+        txtComarca.setText(CasaList.get(indexCasa).getComarca());
 
-        capacitat = b.getString("capacitat") + " persones";
+        capacitat = CasaList.get(indexCasa).getCapacitat() + " persones";
         txtCapacitat.setText(capacitat);
 
-        txtRating.setText(b.getString("rating"));
+        txtRating.setText(String.valueOf(CasaList.get(indexCasa).getMitjana()));
 
         RelativeLayout layoutDesc = (RelativeLayout)findViewById(R.id.descripcio);
         LinearLayout noData = (LinearLayout)findViewById(R.id.noData);
@@ -117,7 +126,7 @@ public class DescCasa extends AppCompatActivity {
 
         RatingBar avg =(RatingBar)findViewById(R.id.avgRating);
 
-        avg.setRating(Float.parseFloat(b.getString("rating")));
+        avg.setRating((float) CasaList.get(indexCasa).getMitjana());
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.viewPageAndroid);
         AdapterImatges adapterView = new AdapterImatges(this);
@@ -125,7 +134,7 @@ public class DescCasa extends AppCompatActivity {
 
         final FloatingActionButton favorits = (FloatingActionButton)findViewById(R.id.floatingActionButton);
 
-        if (fav){
+        if (CasaList.get(indexCasa).isFavorits()){
             favorits.setImageResource(R.drawable.star_selected);
         }else {
             favorits.setImageResource(R.drawable.star_unselected);
@@ -135,133 +144,59 @@ public class DescCasa extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (fav){
+                if (CasaList.get(indexCasa).isFavorits()){
                     favorits.setImageResource(R.drawable.star_unselected);
-                    fav = false;
+                    CasaList.get(indexCasa).setFavorits(false);
                 }else {
                     favorits.setImageResource(R.drawable.star_selected);
-                    fav = true;
-                    posaMarcador(b.getString("id"));
+                    CasaList.get(indexCasa).setFavorits(true);
+                    posaMarcador(String.valueOf(CasaList.get(indexCasa).getIdCasa()));
                 }
             }
         });
 
         campFut = 1;
         internet = 1;
-
         piscina = 1;
 
 
-        if (billar == 0){
+        if (CasaList.get(indexCasa).getBillar() == 0){
             billarImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
-        if (campFut == 0){
+        if (CasaList.get(indexCasa).getCampFutbol() == 0){
             campFutImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
-        if (campTen == 0){
+        if (CasaList.get(indexCasa).getCampTenis() == 0){
             campTenImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
-        if (internet == 0){
+        if (CasaList.get(indexCasa).getInternet() == 0){
             internetImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
-        if (piscina == 0){
+        if (CasaList.get(indexCasa).getPiscina() == 0){
             piscinaImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
-        if (projector == 0){
+        if (CasaList.get(indexCasa).getProjector() == 0){
             projectorImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
-        if (sala == 0){
+        if (CasaList.get(indexCasa).getSalaComuna() == 0){
             salaImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
-        if (pingpong == 0){
+        if (CasaList.get(indexCasa).getTenisTaula() == 0) {
             pingpongImg.setVisibility(View.GONE);
             noInstalacions = true;
-        }else{
-            noInstalacions = false;
         }
 
-        if (noInstalacions){
+        if (CasaList.get(indexCasa).getBillar() == 0 && CasaList.get(indexCasa).getCampFutbol() == 0 && CasaList.get(indexCasa).getCampTenis() == 0 && CasaList.get(indexCasa).getInternet() == 0 && CasaList.get(indexCasa).getPiscina() == 0 && CasaList.get(indexCasa).getProjector() == 0 && CasaList.get(indexCasa).getSalaComuna() == 0 && CasaList.get(indexCasa).getTenisTaula() == 0){
 
             noData.setVisibility(View.VISIBLE);
         }
-
-    }
-    public void consultaApiCasa(final View view, String id){
-
-        final String url = " http://talaiaapi.azurewebsites.net/api/casa/"+id;
-
-        final View view2 = view;
-
-        clientUsuari = new AsyncHttpClient();
-        clientUsuari.setMaxRetriesAndTimeout(0,10000);
-
-        clientUsuari.get(DescCasa.this, url, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onStart() {
-
-                progress = ProgressDialog.show(view2.getContext(),"",
-                        "Carregant dades", true);
-
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                JSONObject casa = null;
-                String str = new String(responseBody);
-
-                try {
-
-                    casa = new JSONObject(str);
-
-                    billar = casa.getInt("Billar");
-                    campFut = casa.getInt("CampFutbol");
-                    campTen = casa.getInt("CampTenis");
-                    internet = casa.getInt("Internet");
-                    piscina = casa.getInt("Piscina");
-                    projector = casa.getInt("Projector");
-                    sala = casa.getInt("SalaComuna");
-                    pingpong = casa.getInt("TenisTaula");
-
-                }catch (JSONException e) {
-
-                    e.printStackTrace();
-
-                }
-                progress.dismiss();
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                Snackbar.make(view, "Error de conexió", Snackbar.LENGTH_LONG)
-                        .show();
-
-                progress.dismiss();
-
-            }
-        });
 
     }
     private void posaMarcador(String idCasa) {

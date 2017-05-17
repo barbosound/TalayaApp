@@ -82,7 +82,7 @@ public class Casa {
         return Poblacio;
     }
 
-    public int getCarrerNum() {
+    public String getCarrerNum() {
         return CarrerNum;
     }
 
@@ -125,7 +125,7 @@ public class Casa {
     private int Internet;
     private String Comarca;
     private String Poblacio;
-    private int CarrerNum;
+    private String CarrerNum;
     private String Provincia;
     private int CodiPostal;
     private int FK_Propietari;
@@ -138,7 +138,7 @@ public class Casa {
 
 
 
-    public Casa (int IdCasa,String Nom,int PreuBasic,int PreuMitja,int PreuCompleta,String Descripcio,int Capacitat,int Habitacions,int Banys,int Piscina,int CampFutbol,int CampTenis,int TenisTaula,int Billar,int SalaComuna,int Projector,int Internet,String Comarca,String Poblacio,int CarrerNum,String Provincia,int CodiPostal,int FK_Propietari,double Mitjana,boolean favorits){
+    public Casa (int IdCasa,String Nom,int PreuBasic,int PreuMitja,int PreuCompleta,String Descripcio,int Capacitat,int Habitacions,int Banys,int Piscina,int CampFutbol,int CampTenis,int TenisTaula,int Billar,int SalaComuna,int Projector,int Internet,String Comarca,String Poblacio,String CarrerNum,String Provincia,int CodiPostal,int FK_Propietari,double Mitjana,boolean favorits){
 
         this.IdCasa = IdCasa;
         this.Nom = Nom;

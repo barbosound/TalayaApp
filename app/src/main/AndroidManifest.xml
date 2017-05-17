@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pau.talaya">
-    
 
-    <uses-permission android:name="android.permission.INTERNET">
 
-</uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
@@ -54,7 +55,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".home" />
         </activity>
-
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDgj2AFqV2TzIaysIU8rdZGlthQD4Lg6lI"/>
 
     </application>
 

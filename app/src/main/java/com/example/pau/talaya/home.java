@@ -295,7 +295,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                 int Internet;
                 String Comarca;
                 String Poblacio;
-                int CarrerNum;
+                String CarrerNum;
                 String Provincia;
                 int CodiPostal;
                 int FK_Propietari;
@@ -330,7 +330,7 @@ public class home extends AppCompatActivity implements ListCases.OnFragmentInter
                         Internet = casa.optInt("Internet");
                         Comarca = casa.optString("Comarca");
                         Poblacio = casa.optString("Poblacio");
-                        CarrerNum = casa.optInt("CarrerNum");
+                        CarrerNum = casa.optString("CarrerNum");
                         Provincia = casa.optString("Provincia");
                         CodiPostal = casa.optInt("CodiPostal");
                         FK_Propietari = casa.optInt("FKUsuari");

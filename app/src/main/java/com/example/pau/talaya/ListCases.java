@@ -57,6 +57,8 @@ public class ListCases extends Fragment {
 
     private View view;
 
+    public static String idCasaSelecc;
+
     public ListCases() {
         // Required empty public constructor
     }
@@ -103,6 +105,7 @@ public class ListCases extends Fragment {
         llista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 Bundle b = new Bundle();
 
                 TextView txtId = (TextView)view.findViewById(R.id.textID);

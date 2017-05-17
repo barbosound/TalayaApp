@@ -2,33 +2,32 @@ package com.example.pau.talaya;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.AccessController;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -39,14 +38,13 @@ import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 
 import static com.example.pau.talaya.LoginActivity.usuariActiu;
 import static com.example.pau.talaya.home.CasaList;
-import static java.security.AccessController.getContext;
 
 
 /**
  * Created by Pau on 28/4/17.
  */
 
-public class DescCasa extends AppCompatActivity {
+public class DescCasa extends AppCompatActivity{
 
     private boolean fav = false;
 
@@ -85,6 +83,8 @@ public class DescCasa extends AppCompatActivity {
         TextView txtCapacitat = (TextView)findViewById(R.id.textCapacitat);
         TextView txtRating = (TextView)findViewById(R.id.textPuntuacio);
 
+        TextView txtDesc = (TextView)findViewById(R.id.txtDesc);
+
         ImageView billarImg = (ImageView)findViewById(R.id.image1);
         ImageView campFutImg = (ImageView)findViewById(R.id.image2);
         ImageView campTenImg = (ImageView)findViewById(R.id.image3);
@@ -118,6 +118,8 @@ public class DescCasa extends AppCompatActivity {
         RelativeLayout layoutDesc = (RelativeLayout)findViewById(R.id.descripcio);
         LinearLayout noData = (LinearLayout)findViewById(R.id.noData);
 
+        txtDesc.setText(CasaList.get(indexCasa).getDescripcio());
+
         layoutDesc.bringToFront();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool);
@@ -135,7 +137,11 @@ public class DescCasa extends AppCompatActivity {
         AdapterImatges adapterView = new AdapterImatges(this);
         mViewPager.setAdapter(adapterView);
 
-        final FloatingActionButton favorits = (FloatingActionButton)findViewById(R.id.floatingActionButton);
+        final FloatingActionButton favorits = (FloatingActionButton)findViewById(R.id.favButton);
+
+        final FloatingActionButton misstge = (FloatingActionButton)findViewById(R.id.missatgeButton);
+
+        misstge.setImageResource(R.drawable.misstage);
 
         if (CasaList.get(indexCasa).isFavorits()){
             favorits.setImageResource(R.drawable.star_selected);
